@@ -354,8 +354,11 @@ do the following:
 
   return (
     <div className="flex">
-    <div className="fixed bottom-20 right-8 w-[400px] h-[630px] z-50 bg-white rounded-lg shadow-2xl overflow-hidden">
-      <div className="bg-indigo-600 p-4 flex items-center justify-between">
+    {/* Assistant Window */}
+    <div className="fixed bottom-4 left-4 right-4 top-10 sm:bottom-20 sm:right-8 sm:left-auto sm:top-auto sm:w-[400px] sm:h-[630px] z-50 bg-white rounded-t-2xl sm:rounded-lg shadow-2xl overflow-hidden flex flex-col">
+  
+      {/* Header */}
+      <div className="bg-indigo-600 p-4 flex items-center justify-between rounded-t-2xl sm:rounded-t-lg">
         <div className="flex items-center gap-2">
           <Bot className="text-white" size={24} />
           <h1 className="text-xl font-semibold text-white">Shopping Assistant</h1>
@@ -367,8 +370,9 @@ do the following:
           <X size={24} />
         </button>
       </div>
-
-      <div className="h-[400px] overflow-y-auto p-4 space-y-4">
+  
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <div key={message.id}>
             <div
@@ -405,8 +409,7 @@ do the following:
                 )}
               </div>
             </div>
-
-
+  
             {message.products && message.products.length > 0 && (
               <div className="mt-4 grid grid-cols-2 gap-4 pl-10">
                 {message.products.map((product) => (
@@ -414,7 +417,6 @@ do the following:
                     key={product._id}
                     className="bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow cursor-pointer"
                     onClick={() => setSelectedProduct(product)}
-                    // onClick={() => navigate(`/product/${product._id}`)}
                   >
                     <img
                       src={product.image}
@@ -432,8 +434,6 @@ do the following:
                 ))}
               </div>
             )}
-
-
           </div>
         ))}
         {isLoading && (
@@ -443,7 +443,8 @@ do the following:
           </div>
         )}
       </div>
-
+  
+      {/* Quick Questions */}
       <div className="p-2 border-t border-gray-200">
         <div className="grid grid-cols-2 gap-2">
           {quickQuestions.map((q) => (
@@ -461,7 +462,8 @@ do the following:
           ))}
         </div>
       </div>
-
+  
+      {/* Input Area */}
       <div className="p-4 border-t border-gray-200">
         <div className="flex gap-2">
           <input
@@ -498,66 +500,63 @@ do the following:
           </p>
         )}
       </div>
-     
     </div>
-     {/* Product Details Section */}
-     {showSuccessPopup && (
-  <div className="fixed bottom-24 right-10 bg-green-100 text-green-800 px-4 py-2 rounded shadow-md transition-all duration-300 z-50">
-    ✅ Added to cart successfully!
-  </div>
-)}
-
-     {selectedProduct && (
-  <div className="fixed bottom-20 right-8 w-[400px] h-[630px] z-[100] bg-white rounded-lg shadow-2xl overflow-hidden z-100">
-    <div className="w-full p-4 z-100">
-      <div className="sticky top-4">
-        <button
-          onClick={() => setSelectedProduct(null)}
-          className="text-gray-500 hover:text-gray-700 mb-4"
-        >
-          ← Back to chat
-        </button>
-        <div className="bg-white rounded-lg shadow-lg p-4">
-          <img
-            src={selectedProduct.image}
-            alt={selectedProduct.name}
-            className="w-full h-48 object-contain mb-4"
-          />
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">
-            {selectedProduct.name}
-          </h2>
-          <p className="text-2xl font-bold text-indigo-600 mb-4">
-            ${selectedProduct.price}
-          </p>
-          <div className="flex items-center gap-1 mb-4">
-            {Array.from({ length: selectedProduct.rating }).map((_, i) => (
-              <span key={i} className="text-yellow-400">★</span>
-            ))}
-          </div>
-          <p className="text-gray-600 mb-6">{selectedProduct.description}</p>
-
+  
+    {/* Success Popup */}
+    {showSuccessPopup && (
+      <div className="fixed bottom-28 right-4 sm:right-10 bg-green-100 text-green-800 px-4 py-2 rounded shadow-md transition-all duration-300 z-50 max-w-[90vw] text-sm">
+        ✅ Added to cart successfully!
+      </div>
+    )}
+  
+    {/* Product Details Section */}
+    {selectedProduct && (
+      <div className="fixed bottom-4 left-4 right-4 top-10 sm:bottom-20 sm:right-8 sm:left-auto sm:top-auto sm:w-[400px] sm:h-[630px] z-[100] bg-white rounded-t-2xl sm:rounded-lg shadow-2xl overflow-y-auto">
+        <div className="w-full p-4">
           <button
-  onClick={() => {
-    if (selectedProduct) {
-      handleAddToCart(selectedProduct);
-      setSelectedProduct(null); // Close detail view
-      setShowSuccessPopup(true); // Show popup
-      setTimeout(() => setShowSuccessPopup(false), 5000); // Hide after 2s
-    }
-  }}
-  className="w-full bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
->
-  <ShoppingCart size={20} />
-  Add to cart
-</button>
-
+            onClick={() => setSelectedProduct(null)}
+            className="text-gray-500 hover:text-gray-700 mb-4"
+          >
+            ← Back to chat
+          </button>
+          <div className="bg-white rounded-lg shadow-lg p-4">
+            <img
+              src={selectedProduct.image}
+              alt={selectedProduct.name}
+              className="w-full h-48 object-contain mb-4"
+            />
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              {selectedProduct.name}
+            </h2>
+            <p className="text-2xl font-bold text-indigo-600 mb-4">
+              ₹{selectedProduct.price}
+            </p>
+            <div className="flex items-center gap-1 mb-4">
+              {Array.from({ length: selectedProduct.rating }).map((_, i) => (
+                <span key={i} className="text-yellow-400">★</span>
+              ))}
+            </div>
+            <p className="text-gray-600 mb-6">{selectedProduct.description}</p>
+  
+            <button
+              onClick={() => {
+                handleAddToCart(selectedProduct);
+                setSelectedProduct(null);
+                setShowSuccessPopup(true);
+                setTimeout(() => setShowSuccessPopup(false), 5000);
+              }}
+              className="w-full bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+            >
+              <ShoppingCart size={20} />
+              Add to cart
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    )}
   </div>
-)}
+  
 
-    </div>
 
   );
 }
@@ -568,34 +567,35 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
      
-<div className="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500">
-  <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 flex flex-col items-center text-center">
+     {/* Hero section */}
+     <div className="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 flex flex-col items-center text-center">
+    
+    <h1 className="text-white text-4xl sm:text-5xl md:text-6xl font-extrabold drop-shadow-lg leading-tight">
+      <span className="typewriter-animation block">
+        Welcome to <span className="text-yellow-300">ShopSmart</span>
+      </span>
+    </h1>
 
-<h1 className="text-white text-5xl sm:text-6xl md:text-7xl font-extrabold drop-shadow-lg">
-  <span className="typewriter-animation">
-    Welcome to <span className="text-yellow-300">ShopSmart</span>
-  </span>
-</h1>
-
-<p className="mt-4 text-indigo-100 text-lg sm:text-xl animate-fade-in delay-[3500ms]">
-  Discover amazing products with the help of our AI shopping assistant.
-</p>
-
-
+    <p className="mt-4 text-indigo-100 text-base sm:text-lg md:text-xl max-w-md sm:max-w-xl animate-fade-in delay-[3500ms]">
+      Discover amazing products with the help of our AI shopping assistant.
+    </p>
 
     <div className="mt-8 animate-fade-in-up">
       <a
         href="#"
-        className="inline-block bg-white text-indigo-700 font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-yellow-300 hover:text-black transition-transform transform hover:scale-105 duration-300"
+        className="inline-block bg-white text-indigo-700 font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-full shadow-lg hover:bg-yellow-300 hover:text-black transition-transform transform hover:scale-105 duration-300"
       >
         Start Shopping
       </a>
     </div>
+    
   </div>
 </div>
 
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Products</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
@@ -619,13 +619,85 @@ function App() {
                   </div>
                 </div>
                 <button className="mt-4 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
-                  Add to Cart
+                  Purchase
                 </button>
               </div>
             </div>
           ))}
         </div>
+      </div> */}
+
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Products</h2>
+
+  {/* Mobile Carousel */}
+  <div className="block lg:hidden overflow-x-auto">
+    <div className="flex gap-4">
+      {featuredProducts.map((product) => (
+        <div
+          key={product._id}
+          className="min-w-[250px] flex-shrink-0 bg-white rounded-lg shadow-md overflow-hidden"
+        >
+          <div className="h-48 w-full overflow-hidden">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-200"
+            />
+          </div>
+          <div className="p-4">
+            <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
+            <p className="text-gray-500 text-sm mb-2">{product.category}</p>
+            <div className="flex items-center justify-between">
+              <span className="text-2xl font-bold text-indigo-600">₹{product.price}</span>
+              <div className="flex items-center">
+                {Array.from({ length: product.rating }).map((_, i) => (
+                  <span key={i} className="text-yellow-400">★</span>
+                ))}
+              </div>
+            </div>
+            <button className="mt-4 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+              Purchase
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Grid layout for larger screens */}
+  <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {featuredProducts.map((product) => (
+      <div key={product._id} className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="h-48 w-full overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-200"
+          />
+        </div>
+        <div className="p-4">
+          <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
+          <p className="text-gray-500 text-sm mb-2">{product.category}</p>
+          <div className="flex items-center justify-between">
+            <span className="text-2xl font-bold text-indigo-600">₹{product.price}</span>
+            <div className="flex items-center">
+              {Array.from({ length: product.rating }).map((_, i) => (
+                <span key={i} className="text-yellow-400">★</span>
+              ))}
+            </div>
+          </div>
+          <button className="mt-4 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+            Purchase
+          </button>
+        </div>
       </div>
+    ))}
+  </div>
+</div>
+
+
+
 {/* Shop by category */}
   
       <ShopByCategory/>
