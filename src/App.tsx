@@ -4,6 +4,7 @@ import { Bot, Send, User, ShoppingCart, Package, CreditCard, Sparkles, Mic, MicO
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import ShopByCategory from './components/shopByCategory';
+import { useNavigate } from 'react-router-dom';
 
 
 // import CartPage from './components/CartPage';
@@ -94,6 +95,7 @@ function ShoppingAssistant({ isOpen, onClose }: { isOpen: boolean; onClose: () =
   const [questionCount, setQuestionCount] = useState(0);
   const [cart, setCart] = useState<Product[]>([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const navigate = useNavigate();
 
 
   const handleAddToCart = (product: Product) => {
@@ -339,6 +341,8 @@ do the following:
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, botMessage]);
+    }else if(question.text ==="Track my order"){
+      navigate("/cart");
     } else {
       const botMessage: Message = {
         id: messages.length + 2,
