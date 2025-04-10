@@ -106,9 +106,24 @@ const ShopByCategory = () => {
                       />
                       <div>
                         <h4 className="text-md font-semibold text-gray-800">{item.name}</h4>
-                        <p className="text-sm text-gray-500 mt-1">₹{item.price}</p>
+                        <p className="text-sm font-semibold text-gray-500 mt-1">₹{item.price}</p>
                         <p className="text-xs text-gray-400 mt-1 line-clamp-2">{item.description}</p>
-                        <p className="text-sm text-yellow-500 mt-1">⭐ {item.rating}</p>
+                        {/* <p className="text-sm text-yellow-500 mt-1">⭐ {item.rating}</p> */}
+                        <div className="flex items-center justify-center mt-1 text-yellow-500 text-sm">
+                        <div className="flex items-center justify-center mt-1 text-yellow-500 text-base sm:text-lg md:text-xl">
+  {Array.from({ length: 5 }, (_, i) => (
+    <span key={i}>
+      {item.rating >= i + 1
+        ? "★"
+        : item.rating >= i + 0.5
+        ? "☆"
+        : "✩"}
+    </span>
+  ))}
+</div>
+
+</div>
+
                       </div>
                     </div>
                   </div>
