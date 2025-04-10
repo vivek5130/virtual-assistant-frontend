@@ -19,4 +19,94 @@
       background-position: 0% 50%;
     }
   }
+  /* Hero section*/
+ @keyframes typing-loop {
+  0% {
+    width: 0;
+  }
+  40% {
+    width: 100%;
+  }
+  60% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+}
+
+.typewriter-animation {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid white;
+  animation: typing-loop 5s steps(40, end) infinite, blink 0.7s step-end infinite;
+  font-family: monospace;
+}
+
+/* Optional fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.5s ease forwards;
+}
+
   
+/* Navbar */
+@layer components {
+  .nav-link {
+    @apply text-gray-600 font-medium transition duration-300 hover:text-indigo-600 hover:underline;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.animate-\[fadeIn_0\.4s_ease-out_forwards\] {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.animate-\[wave_1\.8s_ease-out_infinite\] {
+  animation: wave 1.8s ease-out infinite;
+}

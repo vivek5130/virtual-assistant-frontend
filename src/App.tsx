@@ -4,7 +4,7 @@ import { Bot, Send, User, ShoppingCart, Package, CreditCard, Sparkles, Mic, MicO
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import ShopByCategory from './components/shopByCategory';
-import {  Link } from "react-router-dom";
+
 
 // import CartPage from './components/CartPage';
 
@@ -93,16 +93,19 @@ function ShoppingAssistant({ isOpen, onClose }: { isOpen: boolean; onClose: () =
   const [conversationContext, setConversationContext] = useState<string[]>([]);
   const [questionCount, setQuestionCount] = useState(0);
   const [cart, setCart] = useState<Product[]>([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
 
   const handleAddToCart = (product: Product) => {
-    setCart((prevCart) => {
-      const alreadyInCart = prevCart.find((item) => item._id === product._id);
-      if (alreadyInCart) return prevCart;
-      return [...prevCart, product];
-    });
+    const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+  
+    const alreadyInCart = storedCart.find((item: Product) => item._id === product._id);
+    if (alreadyInCart) return;
+  
+    const updatedCart = [...storedCart, product];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
- 
+  
 
   const {
     transcript,
@@ -176,7 +179,8 @@ Generate the next question for the customer. Requirements:
 2. Focus on key decision factors: purpose/use case, budget, and preferences
 3. Each question should gather multiple data points
 4. Be conversational and friendly
-5. If this is the 3rd question or if you have sufficient information, respond with "COMPLETE: [brief summary of needs]"
+5.  Make the question sound natural, not robotic.
+6. If this is the 3rd question or if you have sufficient information, respond with "COMPLETE: [brief summary of needs]"
 
 If you don't have enough context, ask a broad but meaningful question that captures multiple requirements at once.`;
 
@@ -203,11 +207,15 @@ ${userContext}
 And these available products:
 
 ${productsContext}
+do the following:
 
-1. Analyze the user's key requirements and preferences
+1. Analyze the user's key requirements and preferences(purpose, budget,category, preferences )
 2. Recommend up to 3 most suitable products from the list
-3. Briefly explain why each product matches their needs
-4. Keep the response concise and friendly`;
+3.  For each product, explain *briefly* why it’s a good match.
+4. Keep the response concise and friendly
+5.Donot sound like robot, make the conversation in a human like
+6. Keep your tone conversational, clear, and non-repetitive.
+7. Avoid markdown formatting like "*" or headers.`;
       
       const result = await model.generateContent(prompt);
       const response = await result.response;
@@ -346,7 +354,7 @@ ${productsContext}
 
   return (
     <div className="flex">
-    <div className="fixed bottom-20 right-8 w-[400px] h-[630px] bg-white rounded-lg shadow-2xl overflow-hidden">
+    <div className="fixed bottom-20 right-8 w-[400px] h-[630px] z-50 bg-white rounded-lg shadow-2xl overflow-hidden">
       <div className="bg-indigo-600 p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Bot className="text-white" size={24} />
@@ -493,9 +501,15 @@ ${productsContext}
      
     </div>
      {/* Product Details Section */}
+     {showSuccessPopup && (
+  <div className="fixed bottom-24 right-10 bg-green-100 text-green-800 px-4 py-2 rounded shadow-md transition-all duration-300 z-50">
+    ✅ Added to cart successfully!
+  </div>
+)}
+
      {selectedProduct && (
-  <div className="fixed bottom-20 right-8 w-[400px] h-[630px] bg-white rounded-lg shadow-2xl overflow-hidden">
-    <div className="w-full p-4">
+  <div className="fixed bottom-20 right-8 w-[400px] h-[630px] z-[100] bg-white rounded-lg shadow-2xl overflow-hidden z-100">
+    <div className="w-full p-4 z-100">
       <div className="sticky top-4">
         <button
           onClick={() => setSelectedProduct(null)}
@@ -521,21 +535,27 @@ ${productsContext}
             ))}
           </div>
           <p className="text-gray-600 mb-6">{selectedProduct.description}</p>
-          <button
-         
-            onClick={() => selectedProduct && handleAddToCart(selectedProduct)}
 
-            className="w-full bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
-          >
-            <ShoppingCart size={20} />
-            Purchase Now
-          </button>
+          <button
+  onClick={() => {
+    if (selectedProduct) {
+      handleAddToCart(selectedProduct);
+      setSelectedProduct(null); // Close detail view
+      setShowSuccessPopup(true); // Show popup
+      setTimeout(() => setShowSuccessPopup(false), 5000); // Hide after 2s
+    }
+  }}
+  className="w-full bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 transition-colors flex items-center justify-center gap-2"
+>
+  <ShoppingCart size={20} />
+  Add to cart
+</button>
+
         </div>
       </div>
     </div>
   </div>
 )}
-
 
     </div>
 
@@ -547,35 +567,33 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <ShoppingCart className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">ShopSmart</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <a href="#" className="text-gray-600 hover:text-gray-900">Home</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">Categories</a>
-              <a href="#" className="text-gray-600 hover:text-gray-900">Deals</a>
-              <Link to="/cart" className="text-gray-600 hover:text-gray-900">Cart</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+     
+<div className="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500">
+  <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-24 flex flex-col items-center text-center">
 
-      <div className="bg-indigo-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-white sm:text-5xl md:text-6xl">
-              Welcome to ShopSmart
-            </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-indigo-100 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              Discover amazing products with the help of our AI shopping assistant.
-            </p>
-          </div>
-        </div>
-      </div>
+<h1 className="text-white text-5xl sm:text-6xl md:text-7xl font-extrabold drop-shadow-lg">
+  <span className="typewriter-animation">
+    Welcome to <span className="text-yellow-300">ShopSmart</span>
+  </span>
+</h1>
+
+<p className="mt-4 text-indigo-100 text-lg sm:text-xl animate-fade-in delay-[3500ms]">
+  Discover amazing products with the help of our AI shopping assistant.
+</p>
+
+
+
+    <div className="mt-8 animate-fade-in-up">
+      <a
+        href="#"
+        className="inline-block bg-white text-indigo-700 font-semibold px-8 py-3 rounded-full shadow-lg hover:bg-yellow-300 hover:text-black transition-transform transform hover:scale-105 duration-300"
+      >
+        Start Shopping
+      </a>
+    </div>
+  </div>
+</div>
+
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Products</h2>
@@ -612,23 +630,31 @@ function App() {
   
       <ShopByCategory/>
       
-{/* Cart section */}
-{/* <Cart cart={cart} setCart={setCart} /> */}
      
-   <div className="fixed bottom-4 right-4 flex flex-col items-center gap-1 z-50">
+  
+<div className="fixed bottom-4 right-4 flex flex-col items-center gap-2 z-50">
   {!isAssistantOpen && (
-    <div className="animated-bg-box text-white text-sm px-4 py-1 rounded-full shadow-md font-medium">
+    <div className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm px-4 py-1 rounded-full shadow-md font-medium opacity-0 animate-[fadeIn_0.4s_ease-out_forwards]">
       How may I help you?
     </div>
   )}
 
-  <button
-    onClick={() => setIsAssistantOpen(true)}
-    className="bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-colors"
-  >
-    <Bot size={24} />
-  </button>
+  <div className="relative">
+    {/* Conditional wave animation (only when assistant is closed) */}
+    {!isAssistantOpen && (
+      <div className="absolute inset-0 rounded-full border-4 border-indigo-400 opacity-70 animate-[wave_1.8s_ease-out_infinite] z-0" />
+    )}
+
+    <button
+      onClick={() => setIsAssistantOpen(true)}
+      className="relative z-10 bg-indigo-600 text-white p-4 rounded-full shadow-xl hover:bg-indigo-700 transition-transform hover:scale-110"
+    >
+      <Bot size={24} />
+    </button>
+  </div>
 </div>
+
+
 
 <ShoppingAssistant
   isOpen={isAssistantOpen}
