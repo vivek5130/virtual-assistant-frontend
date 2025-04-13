@@ -1,9 +1,16 @@
+Absolutely! Here's your updated `README.md` with the **how to run** section and the **live deployed link** included:
 
+---
 
 ```markdown
 # 🛍️ ShopSmart 
 
-Welcome to **ShopSmart**, a modern and interactive AI-powered virtual assisstant. This project uses **React**, **TypeScript**, and **Tailwind CSS**, and includes an integrated AI Shopping Assistant to help users find products easily via voice and chat.
+Welcome to **ShopSmart**, a modern and interactive AI-powered virtual assistant. This project uses **React**, **TypeScript**, and **Tailwind CSS**, and includes an integrated AI Shopping Assistant to help users find products easily via voice and chat.
+
+🔗 **Live Demo:**  
+👉 [https://virtual-assistant-frontend-sigma.vercel.app/](https://virtual-assistant-frontend-sigma.vercel.app/)
+
+---
 
 ## 🚀 Features
 
@@ -27,8 +34,32 @@ Welcome to **ShopSmart**, a modern and interactive AI-powered virtual assisstant
 - **React Router** for navigation
 - **SpeechRecognition API** for voice input
 - **Gemini API** (Google AI) for product recommendations
-- **Mongo Db** database
-- **Node.js** for Backend
+- **MongoDB** for the database
+- **Node.js** for backend
+
+---
+
+## 📦 How to Run Locally
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/vivek5130/virtual-assistant-frontend.git
+cd virtual-assistant-frontend
+
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the Development Server
+
+```bash
+npm run dev
+```
 
 ---
 
@@ -47,7 +78,8 @@ This project is open-source and available under the [MIT License](LICENSE).
 
 ## ✨ Credits
 
-Built by [Ganathe Vivek]
+Built by **[Ganathe Vivek](https://github.com/vivek5130)**  
+Final-year Computer Science (AIML) student passionate about AI, web development, and real-world problem solving.
 ```
 
 ---
