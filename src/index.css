@@ -110,3 +110,7 @@
 .animate-\[wave_1\.8s_ease-out_infinite\] {
   animation: wave 1.8s ease-out infinite;
 }
+
+html {
+  scroll-behavior: smooth;
+}

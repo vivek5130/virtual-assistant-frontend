@@ -87,7 +87,7 @@ const ShopByCategory = () => {
   if (loading) return <div className="text-center py-12">Loading products...</div>;
 
   return (
-    <div className="bg-gray-100 py-12">
+    <div className="bg-gray-100 py-12" id = "shopByCategory">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Shop by Category</h2>
 

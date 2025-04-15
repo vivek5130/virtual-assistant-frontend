@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-6">
             <Link to="/" className="nav-link">Home</Link>
-            <a href="#" className="nav-link">Categories</a>
+            <a href="#shopByCategory" className="nav-link">Categories</a>
             <a href="#" className="nav-link">Deals</a>
             <Link to="/cart" className="nav-link">Cart</Link>
           </div>
@@ -41,7 +41,7 @@ const Navbar: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white/95 px-6 pt-2 pb-4 shadow-md">
           <Link to="/" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-gray-800 font-medium">Home</Link>
-          <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-gray-800 font-medium">Categories</a>
+          <a href="#shopByCategory" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-gray-800 font-medium">Categories</a>
           <a href="#" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-gray-800 font-medium">Deals</a>
           <Link to="/cart" onClick={() => setMobileMenuOpen(false)} className="block py-2 text-gray-800 font-medium">Cart</Link>
         </div>

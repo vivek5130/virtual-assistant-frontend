@@ -5,9 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import ShopByCategory from './components/shopByCategory';
 import { useNavigate } from 'react-router-dom';
-
-
-// import CartPage from './components/CartPage';
+import './index.css';
 
 
 type Message = {
@@ -598,39 +596,6 @@ function App() {
   </div>
 </div>
 
-
-
-      {/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Products</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts.map((product) => (
-            <div key={product._id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="h-48 w-full overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-200"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
-                <p className="text-gray-500 text-sm mb-2">{product.category}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-indigo-600">₹{product.price}</span>
-                  <div className="flex items-center">
-                    {Array.from({ length: product.rating }).map((_, i) => (
-                      <span key={i} className="text-yellow-400">★</span>
-                    ))}
-                  </div>
-                </div>
-                <button className="mt-4 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
-                  Purchase
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div> */}
 
 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
   <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Products</h2>
