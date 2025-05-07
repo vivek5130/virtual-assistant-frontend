@@ -4,7 +4,6 @@ import App from './App.tsx';
 import './index.css';
 import CartPage from './components/CartPage.tsx';
 import Navbar from './components/Navbar.tsx';
-// import ProductDetails from './components/ProductDetails.tsx';
 
 createRoot(document.getElementById('root')!).render(
   
@@ -15,10 +14,6 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/cart" element={<CartPage />} />
-        {/* <Route path="/product/:id" element={<ProductDetails />} /> */}
-        {/* You can add more routes here if needed */}
-        {/* <Route path="/product/:id" element={<ProductDetails />} /> */}
-        {/* <Route path="/cart" element={<CartPage />} /> */}
       </Routes>
     </Router>
  

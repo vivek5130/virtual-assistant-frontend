@@ -10,24 +10,28 @@ const ShopByCategory = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("https://virtual-assistant-backend-wott.onrender.com/api/products")
-      .then(response => {
+    axios
+      .get("https://virtual-assistant-backend-wott.onrender.com/api/products")
+      .then((response) => {
         setProducts(response.data);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching products:", error);
         setLoading(false);
       });
   }, []);
 
-  const categorizedProducts = products.reduce((acc: { [key: string]: any[] }, product: any) => {
-    if (!acc[product.category]) {
-      acc[product.category] = [];
-    }
-    acc[product.category].push(product);
-    return acc;
-  }, {});
+  const categorizedProducts = products.reduce(
+    (acc: { [key: string]: any[] }, product: any) => {
+      if (!acc[product.category]) {
+        acc[product.category] = [];
+      }
+      acc[product.category].push(product);
+      return acc;
+    },
+    {}
+  );
 
   // Custom arrow components
   const CustomPrevArrow = (props: any) => {
@@ -68,32 +72,37 @@ const ShopByCategory = () => {
     responsive: [
       {
         breakpoint: 1280,
-        settings: { slidesToShow: 3 }
+        settings: { slidesToShow: 3 },
       },
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 2 }
+        settings: { slidesToShow: 2 },
       },
       {
         breakpoint: 640,
         settings: {
           slidesToShow: 1,
           arrows: false, // hide arrows on small screens
-        }
-      }
-    ]
+        },
+      },
+    ],
   };
 
-  if (loading) return <div className="text-center py-12">Loading products...</div>;
+  if (loading)
+    return <div className="text-center py-12">Loading products...</div>;
 
   return (
-    <div className="bg-gray-100 py-12" id = "shopByCategory">
+    <div className="bg-gray-100 py-12" id="shopByCategory">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Shop by Category</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          Shop by Category
+        </h2>
 
         {Object.entries(categorizedProducts).map(([category, items]) => (
           <div key={category} className="mb-12">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">{category}</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              {category}
+            </h3>
             <div className="relative">
               <Slider {...sliderSettings}>
                 {(items as any[]).map((item: any) => (
@@ -105,25 +114,29 @@ const ShopByCategory = () => {
                         className="h-40 w-full object-contain mb-3"
                       />
                       <div>
-                        <h4 className="text-md font-semibold text-gray-800">{item.name}</h4>
-                        <p className="text-sm font-semibold text-gray-500 mt-1">₹{item.price}</p>
-                        <p className="text-xs text-gray-400 mt-1 line-clamp-2">{item.description}</p>
+                        <h4 className="text-md font-semibold text-gray-800">
+                          {item.name}
+                        </h4>
+                        <p className="text-sm font-semibold text-gray-500 mt-1">
+                          ₹{item.price}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                          {item.description}
+                        </p>
                         {/* <p className="text-sm text-yellow-500 mt-1">⭐ {item.rating}</p> */}
                         <div className="flex items-center justify-center mt-1 text-yellow-500 text-sm">
-                        <div className="flex items-center justify-center mt-1 text-yellow-500 text-base sm:text-lg md:text-xl">
-  {Array.from({ length: 5 }, (_, i) => (
-    <span key={i}>
-      {item.rating >= i + 1
-        ? "★"
-        : item.rating >= i + 0.5
-        ? "☆"
-        : "✩"}
-    </span>
-  ))}
-</div>
-
-</div>
-
+                          <div className="flex items-center justify-center mt-1 text-yellow-500 text-base sm:text-lg md:text-xl">
+                            {Array.from({ length: 5 }, (_, i) => (
+                              <span key={i}>
+                                {item.rating >= i + 1
+                                  ? "★"
+                                  : item.rating >= i + 0.5
+                                  ? "☆"
+                                  : "✩"}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -133,7 +146,6 @@ const ShopByCategory = () => {
           </div>
         ))}
       </div>
-
       <style>{`
   .custom-arrow {
     position: absolute;
@@ -164,7 +176,7 @@ const ShopByCategory = () => {
     }
   }
 `}</style>
-``
+      ``
     </div>
   );
 };
