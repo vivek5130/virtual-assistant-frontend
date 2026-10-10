@@ -2,115 +2,81 @@
 @tailwind components;
 @tailwind utilities;
 
-.animated-bg-box {
-    background: linear-gradient(-45deg, #1e3a8a, #4b5563, #6d28d9, #111827);
-    background-size: 300% 300%;
-    animation: bgColorShift 10s ease infinite;
-  }
-  
-  @keyframes bgColorShift {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-  /* Hero section*/
- @keyframes typing-loop {
-  0% {
-    width: 0;
-  }
-  40% {
-    width: 100%;
-  }
-  60% {
-    width: 100%;
-  }
-  100% {
-    width: 0;
-  }
+/* ShopSmart palette — RGB triplets so Tailwind can apply alpha. */
+:root {
+  --green: 31 122 77;        /* #1F7A4D  brand */
+  --green-deep: 15 77 46;    /* #0F4D2E */
+  --green-soft: 220 240 228;
+  --crimson: 200 16 46;      /* #C8102E  sale / alerts */
+  --crimson-soft: 251 226 230;
+  --orange: 242 107 29;      /* #F26B1D  action */
+  --orange-soft: 253 233 218;
+  --yellow: 255 201 60;      /* #FFC93C  highlight */
+  --yellow-soft: 255 244 207;
+  --blue: 30 90 168;         /* #1E5AA8  info / links */
+  --blue-soft: 224 235 250;
+  --cream: 255 248 236;      /* #FFF8EC  page */
+  --paper: 255 253 247;      /* cards */
+  --ink: 27 26 23;           /* #1B1A17 */
+  --muted: 107 100 88;
+  --line: 233 223 201;
 }
 
-@keyframes blink {
-  0%, 100% {
-    border-color: transparent;
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
   }
-  50% {
-    border-color: white;
-  }
+  /* Fraunces: soft optical-size serif for display; a touch of SOFT keeps it warm. */
+  h1, h2, h3 { @apply font-display; letter-spacing: -0.02em; }
+  .font-display { font-variation-settings: "SOFT" 60; font-optical-sizing: auto; }
+  :focus-visible { outline: 3px solid rgb(var(--blue)); outline-offset: 2px; }
 }
 
-.typewriter-animation {
-  display: inline-block;
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 3px solid white;
-  animation: typing-loop 5s steps(40, end) infinite, blink 0.7s step-end infinite;
-  font-family: monospace;
-}
-
-/* Optional fade-in */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 1.5s ease forwards;
-}
-
-  
-/* Navbar */
 @layer components {
-  .nav-link {
-    @apply text-gray-600 font-medium transition duration-300 hover:text-indigo-600 hover:underline;
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
   }
+  .btn-primary { @apply btn bg-green text-paper hover:bg-green-deep; }
+  .btn-action { @apply btn border-2 border-ink bg-orange text-ink shadow-sticker hover:bg-yellow; }
+  .btn-ghost { @apply btn border border-line bg-paper text-ink hover:border-ink; }
+  .chip { @apply inline-flex items-center gap-1 rounded-full border border-line bg-paper px-3 py-1 text-sm; }
+  .card { @apply rounded-blob border border-line bg-paper; }
+  .input {
+    @apply w-full rounded-xl border border-line bg-paper px-3 py-2 text-ink placeholder:text-muted/70 focus:border-blue focus:outline-none focus:ring-2 focus:ring-blue/20;
+  }
+  .label { @apply mb-1 block text-sm font-semibold text-ink; }
+  .hint { @apply mt-1 text-xs text-muted; }
+  .eyebrow { @apply font-mono text-[11px] uppercase tracking-[0.18em] text-muted; }
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ---- Micro-interactions (exactly three) ---- */
+
+/* 1. Cart badge "pop" when the count changes. */
+@keyframes tag-pop {
+  0% { transform: scale(1) rotate(0deg); }
+  40% { transform: scale(1.35) rotate(-8deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+.animate-pop { animation: tag-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* 2. Product card lift + price-sticker tilt on hover. */
+.lift { transition: transform 220ms ease, box-shadow 220ms ease; }
+.lift:hover { transform: translateY(-4px); box-shadow: 6px 6px 0 0 rgb(var(--ink)); }
+.lift .sticker { transition: transform 220ms ease; }
+.lift:hover .sticker { transform: rotate(-6deg) scale(1.06); }
+
+/* 3. Chat launcher label peeks in once. */
+@keyframes peek {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-peek { animation: peek 500ms 900ms both ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pop, .animate-peek { animation: none; }
+  .lift, .lift .sticker { transition: none; }
+  .lift:hover, .lift:hover .sticker { transform: none; }
 }
 
-@keyframes wave {
-  0% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-  70% {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}
-
-.animate-\[fadeIn_0\.4s_ease-out_forwards\] {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-.animate-\[wave_1\.8s_ease-out_infinite\] {
-  animation: wave 1.8s ease-out infinite;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+.scrollbar-thin { scrollbar-width: thin; }
